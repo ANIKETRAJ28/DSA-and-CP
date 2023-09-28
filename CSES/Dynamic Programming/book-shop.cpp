@@ -5,7 +5,7 @@ using namespace std;
 
 // https://cses.fi/problemset/task/1158
 
-vector<vector<ll>> dp;
+vector<vector<int>> dp;
 
 // top-down TLE
 ll ftd(vector<int> &prices, vector<int> &pages, int i, int amt){
@@ -21,19 +21,26 @@ ll ftd(vector<int> &prices, vector<int> &pages, int i, int amt){
 int main(){
     int n, x;
     cin>>n>>x;
-    vector<int> prices;
+    vector<int> price(n), pages(n);
     for(int i = 0 ; i < n ; i++){
-        int price;
-        cin>>price;
-        prices.push_back(price);
+        cin>>price[i];
     }
-    vector<int> pages;
     for(int i = 0 ; i < n ; i++){
-        int page;
-        cin>>page;
-        pages.push_back(page);
+        cin>>pages[i];
     }
-    dp.resize(1005, vector<ll> (100005, -1));
-    cout<<ftd(prices,pages, 0, x);
+    // dp.resize(1005, vector<ll> (100005, -1));
+    // cout<<ftd(prices,pages, 0, x);
+
+    // bottom-up
+    dp.resize(1005, vector<int> (100005, 0));
+    // for price 0 no books can be bought and for 0 pages we cannot buy
+    // so base case will be 0 for 0 price and 0 page
+    for (int i = 1 ; i <= n ; i++) {
+        for (int j = 1 ; j <= x ; j++) {
+            if(j >= price[i-1]) dp[i][j] = pages[i-1] + dp[i-1][j-price[i-1]];
+            dp[i][j] = max(dp[i-1][j], dp[i][j]);
+        }
+    }
+    cout<<dp[n][x];
     return 0;
 }

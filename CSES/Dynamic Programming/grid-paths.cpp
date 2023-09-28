@@ -29,10 +29,28 @@ int main(){
             cin>>v[i][j];
         }
     }
+    // memset(dp, -1, sizeof(dp));
+    // cout<<ftd(v, 0, 0);
+    memset(dp, 0, sizeof(dp));
 
-    memset(dp, -1, sizeof(dp));
+    // bottom-up
+    if(v[n-1][n-1] == '.') dp[n-1][n-1] = 1;
+    
+    for(int i = n-2 ; i >= 0 ; i--){
+        if(v[n-1][i] == '.') dp[n-1][i] += dp[n-1][i+1];
+    }
 
-    cout<<ftd(v, 0, 0);
+    for(int i = n-2 ; i >= 0 ; i--){
+        if(v[i][n-1] == '.') dp[i][n-1] += dp[i+1][n-1];
+    }
+
+    for(int i = n-2 ; i >= 0 ; i--){
+        for(int j = n-2 ; j >= 0 ; j--){
+            if(v[i][j] != '*') dp[i][j] = (dp[i][j+1] % mod + dp[i+1][j] % mod) % mod;
+        }
+    }
+    
+    cout<<dp[0][0];
 
     return 0;
 }
