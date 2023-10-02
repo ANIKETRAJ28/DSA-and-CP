@@ -37,10 +37,17 @@ int main(){
     // so base case will be 0 for 0 price and 0 page
     for (int i = 1 ; i <= n ; i++) {
         for (int j = 1 ; j <= x ; j++) {
-            if(j >= price[i-1]) dp[i][j] = pages[i-1] + dp[i-1][j-price[i-1]];
-            dp[i][j] = max(dp[i-1][j], dp[i][j]);
+            if(j >= price[i-1]) dp[i][j] = max(dp[i-1][j], pages[i-1] + dp[i-1][j-price[i-1]]);
+            else dp[i][j] = max(dp[i-1][j], dp[i][j]);
         }
     }
-    cout<<dp[n][x];
+    cout<<dp[n][x]<<"\n";
+    
+    // for (int i = 0 ; i <= n ; i++) {
+    //     for (int j = 0 ; j <= x ; j++) {
+    //         cout<<dp[i][j]<<" ";
+    //     }
+    //     cout<<"\n";
+    // }
     return 0;
 }

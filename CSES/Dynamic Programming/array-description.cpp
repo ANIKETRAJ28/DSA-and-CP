@@ -35,6 +35,7 @@ int main(){
     cin>>n>>m;
     arr.clear();
     arr.resize(n+1);
+    // 1 based indexing
     for(int i = 1 ; i <= n ; i++){
         cin>>arr[i];
     }
