@@ -13,63 +13,60 @@ using vec = vector<T>;
 class Solution {
 public:
 
-    void dfs(vec<vec<char>>& grid, int i, int j){
+    vector<pair<int, int>> dir = {{-1, 0}, {0, -1}, {1, 0}, {0, 1}};
+
+    bool check(vector<vector<char>>& grid, int i, int j){
         int n = grid.size();
         int m = grid[0].size();
-        // base case
-        if(i < 0 || i >= n || j < 0 || j >= m || grid[i][j] == '0') return;
-        grid[i][j] = '0';
-        dfs(grid, i+1, j);
-        dfs(grid, i, j+1);
-        dfs(grid, i-1, j);
-        dfs(grid, i, j-1);
+
+        return (i >= 0 && j >= 0 && i < n && j < m && grid[i][j] == '1');
     }
 
-    int numIslands(vec<vec<char>>& grid) {
+    void dfs(vector<vector<char>>& grid, int i, int j){
+        int n = grid.size();
+        int m = grid[0].size();
+
+        if(not check(grid, i, j)) return;
+        grid[i][j] = '0';
+        for(int d = 0 ; d < 4 ; d++){
+            dfs(grid, i+dir[d].first, j+dir[d].second);
+        }
+    }
+
+    int numIslands(vector<vector<char>>& grid) {
         int n = grid.size();
         int m = grid[0].size();
         int ans = 0;
-        // for(int i = 0 ; i < n ; i++){
-        //     for(int j = 0 ; j < m ; j++){
-        //         if(grid[i][j] == '1'){
-        //             dfs(grid, i, j);
-        //             ans++;
-        //         }
-        //     }
-        // }
-
+        // dfs
+        for(int i = 0 ; i < n ; i++){
+            for(int j = 0 ; j < m ; j++){
+                if(grid[i][j] == '1'){
+                    dfs(grid, i, j);
+                    ans++;
+                }
+            }
+        }
+        return ans;
+        // bfs
         queue<pair<int, int>> qu;
-        for(int r = 0 ; r < n ; r++){
-            for(int c = 0 ; c < m ; c++){
-                if(grid[r][c] == '0') continue;
+        for(int i = 0 ; i < n ; i++){
+            for(int j = 0 ; j < m ; j++){
+                // sea section
+                if(grid[i][j] == '0') continue;
+                qu.push({i, j});
+                grid[i][j] = '0';
                 ans++;
-                grid[r][c] = '0';
-                qu.push({r, c});
                 while(not qu.empty()){
-                    auto curr = qu.front();
+                    auto ele = qu.front();
                     qu.pop();
-                    int row = curr.first;
-                    int col = curr.second;
-                    // top
-                    if(row-1 >= 0 and grid[row-1][col] == '1'){
-                        qu.push({row-1, col});
-                        grid[row-1][col] = '0';
-                    }
-                    // left
-                    if(col-1 >= 0 and grid[row][col-1] == '1'){
-                        qu.push({row, col-1});
-                        grid[row][col-1] = '0';
-                    }
-                    // bottom
-                    if(row+1 < n and grid[row+1][col] == '1'){
-                        qu.push({row+1, col});
-                        grid[row+1][col] = '0';
-                    }
-                    // right
-                    if(col+1 < m and grid[row][col+1] == '1'){
-                        qu.push({row, col+1});
-                        grid[row][col+1] = '0';
-                    }
+                    int r = ele.first;
+                    int c = ele.second;
+                    for(int d = 0 ; d < 4 ; d++){
+                        if(check(grid, r + dir[d].first, c + dir[d].second)){
+                            qu.push({r + dir[d].first, c + dir[d].second});
+                            grid[r + dir[d].first][c + dir[d].second] = '0';
+                        }
+                    } 
                 }
             }
         }
