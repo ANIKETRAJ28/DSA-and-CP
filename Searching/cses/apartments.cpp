@@ -12,23 +12,33 @@ int main()
 {
     int n, m, k;
     cin >> n >> m >> k;
-    vec<int> applicants(n), appartments(m);
+    vec<int> desiredSize(n), appartments(m);
+    for (int i = 0; i < n; i++)
+    {
+        cin >> desiredSize[i];
+    }
     for (int i = 0; i < m; i++)
     {
         cin >> appartments[i];
     }
+
+    sort(desiredSize.begin(), desiredSize.end());
+    sort(appartments.begin(), appartments.end());
     for (int i = 0; i < n; i++)
     {
-        cin >> applicants[i];
+        cout << desiredSize[i] << " ";
     }
-
-    sort(applicants.begin(), applicants.end());
-    sort(appartments.begin(), appartments.end());
+    cout << "\n";
+    for (int i = 0; i < m; i++)
+    {
+        cout << appartments[i] << " ";
+    }
+    cout << "\n";
     int i = 0, j = 0;
     int count = 0;
-    while (i <= m && j <= n)
+    while (i < m && j < n)
     {
-        if (appartments[j] >= applicants[i] || appartments[j] >= applicants[i] - k)
+        if (desiredSize[j] - k == appartments[i] || desiredSize[j] + k == appartments[i])
         {
             i++;
             j++;
