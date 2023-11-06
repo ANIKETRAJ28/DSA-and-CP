@@ -49,6 +49,7 @@ bool dfs(int src, int parent)
             return dfs(neighbor, src);
         }
     }
+    return false;
 }
 
 int main()
