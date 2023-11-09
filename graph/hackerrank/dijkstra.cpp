@@ -2,6 +2,7 @@
 #define ll long long int
 #define infp INT_MAX
 #define infn INT_MIN
+#define p pair<int>
 #define pp pair<int, int>
 #define mod 1000000007
 
@@ -9,25 +10,22 @@ using namespace std;
 template <typename T>
 using vec = vector<T>;
 
-// https://www.hackerrank.com/challenges/primsmstsub/problem
-
 vec<list<pp>> graph;
 
-void add(int src, int dst, int wgt, bool bi_direc = true)
+void add_edge(int src, int dst, int wgt, bool bi_direc = true)
 {
     graph[src].push_back({dst, wgt});
     if (bi_direc)
         graph[dst].push_back({src, wgt});
 }
 
-ll prims(int src)
+unordered_map<int, int> dijkstra(int src)
 {
     int n = graph.size();
-    vec<int> parent(n + 1);
-    int res = 0;
-    unordered_set<int> visited;
     unordered_map<int, int> mp;
-    for (int i = 1; i <= n; i++)
+    unordered_set<int> visited;
+    vec<int> via(n);
+    for (int i = 0; i < n; i++)
     {
         mp[i] = infp;
     }
@@ -41,33 +39,49 @@ ll prims(int src)
         if (visited.count(curr.second))
             continue;
         visited.insert(curr.second);
-        res += curr.first;
-        for (auto neighbour : graph[curr.second])
+        for (auto neighbor : graph[curr.second])
         {
-            if (not visited.count(neighbour.first) and mp[neighbour.first] > neighbour.second)
+            if (not visited.count(neighbor.first) and mp[neighbor.first] > mp[curr.second] + neighbor.second)
             {
-                pq.push({neighbour.second, neighbour.first});
-                parent[neighbour.first] = curr.second;
-                mp[neighbour.first] = neighbour.second;
+                pq.push({mp[curr.second] + neighbor.second, neighbor.first});
+                mp[neighbor.first] = mp[curr.second] + neighbor.second;
+                via[neighbor.first] = curr.second;
             }
         }
     }
-    return res;
+    return mp;
 }
 
 int main()
 {
     int n, m;
     cin >> n >> m;
-    graph.resize(n + 1, list<pp>());
+    graph.resize(n, list<pp>());
     while (m--)
     {
         int src, dst, wgt;
         cin >> src >> dst >> wgt;
-        add(src, dst, wgt);
+        add_edge(src, dst, wgt);
     }
     int src;
     cin >> src;
-    cout << prims(src);
+    unordered_map<int, int> mp = dijkstra(src);
+    int dst;
+    cin >> dst;
+    cout << mp[dst];
     return 0;
 }
+
+// eg
+// 7
+// 9
+// 0 1 1
+// 0 2 5
+// 1 3 1
+// 1 2 4
+// 2 4 1
+// 3 4 1
+// 3 6 2
+// 4 5 5
+// 5 6 1
+// 0 5

@@ -25,12 +25,12 @@ void Union(vec<int> &parent, vec<int> &rank, int a, int b)
     if (rank[a] >= rank[b])
     {
         rank[a]++;
-        parent[a] = b;
+        parent[b] = a;
     }
     else
     {
         rank[b]++;
-        parent[b] = a;
+        parent[a] = b;
     }
 }
 
@@ -53,23 +53,17 @@ ll Kruskals(vec<Edges> &input, int n, int e)
     vec<int> rank(n + 1, 0);
     for (int i = 0; i <= n; i++)
         parent[i] = i;
-    int edgeCnt = 0;
-    int i = 0;
     ll ans = 0;
-    while (edgeCnt < n - 1 and i <= input.size())
+    for (int i = 0; i < input.size(); i++)
     {
         Edges curr = input[i];
         int srcPrnt = find(curr.src, parent);
         int dstPrnt = find(curr.dst, parent);
-        cout << curr.src << " " << curr.dst << " " << curr.wts << "\n";
         if (srcPrnt != dstPrnt)
         {
             Union(parent, rank, srcPrnt, dstPrnt);
-            // cout << curr.src << " " << curr.dst << " " << curr.wts << "\n";
             ans += curr.wts;
-            edgeCnt++;
         }
-        i++;
     }
     return ans;
 }
