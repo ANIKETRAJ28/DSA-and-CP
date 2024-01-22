@@ -8,8 +8,8 @@
       "args": [],
       "stopAtEntry": false,
       "externalConsole": true,
-      "cwd": "c:/Users/anike/Desktop/DSA-and-CP/Recursion/leetcoder",
-      "program": "c:/Users/anike/Desktop/DSA-and-CP/Recursion/leetcoder/build/Debug/outDebug",
+      "cwd": "c:/Users/anike/Desktop/DSA-and-CP/Recursion",
+      "program": "c:/Users/anike/Desktop/DSA-and-CP/Recursion/build/Debug/outDebug",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [
