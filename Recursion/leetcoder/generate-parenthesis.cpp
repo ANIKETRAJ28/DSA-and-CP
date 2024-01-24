@@ -10,32 +10,26 @@ using vec = vector<T>;
 
 // https://leetcode.com/problems/generate-parentheses/
 
-class Solution
-{
+class Solution {
 public:
-    void generate(vector<string> &v, string s, int ob, int cb, int n)
-    {
-        if (ob == n && cb == n)
-        {
-            v.push_back(s);
+    void f(int o, int c, string s, vector<string> &ans, int n) {
+        if(o == n and c == n) {
+            ans.push_back(s);
             return;
         }
-        if (ob <= n)
-            generate(v, s + '(', ob + 1, cb, n);
-        if (cb <= n && cb < ob)
-            generate(v, s + ')', ob, cb + 1, n);
+        if(o > n or c > n) return;
+        f(o+1, c, s+ '(', ans, n);
+        if(c < o) f(o, c+1, s+ ')', ans, n);
     }
-    vector<string> generateParenthesis(int n)
-    {
-        vector<string> v;
-        string s = "";
-        generate(v, s, 0, 0, n);
-        return v;
+    vector<string> generateParenthesis(int n) {
+        vector<string> ans;
+        f(0, 0, "", ans, n);
+        return ans;
     }
 };
 
-int main()
-{
+
+int main() {
 
     return 0;
 }
