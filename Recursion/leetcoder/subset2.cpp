@@ -46,6 +46,29 @@ public:
     }
 };
 
+class Solution {
+public:
+    void f(vector<int> &s, vector<int> ans, int i, vector<vector<int>> &str) {
+        int n = s.size();
+        if(i == n) {
+            str.push_back(ans);
+            return;
+        }
+        if(ans.size() == 0 or s[i] != ans[ans.size()-1]) {
+            f(s, ans, i+1, str);
+        }
+        ans.push_back(s[i]);
+        f(s, ans, i+1, str);
+    }
+    vector<vector<int>> subsetsWithDup(vector<int>& nums) {
+        vector<vector<int>> final_ans;
+        vector<int> ans;
+        sort(nums.begin(), nums.end());
+        f(nums, ans, 0, final_ans);
+        return final_ans;
+    }
+};
+
 int main()
 {
 
