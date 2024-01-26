@@ -40,6 +40,32 @@ public:
     }
 };
 
+class Solution {
+public:
+    vector<vector<int>> ans;
+    void f(vector<int> &c, vector<int> sum, int i, int t) {
+        if(t == 0) {
+            ans.push_back(sum);
+            return;
+        }
+        if(t < 0) return;
+
+        int n = c.size();
+        for(int j = i ; j < n ; j++) {
+            t -= c[j];
+            sum.push_back(c[j]);
+            f(c, sum, j, t);
+            t += c[j];
+            sum.pop_back();
+        }
+    }
+    vector<vector<int>> combinationSum(vector<int>& candidates, int target) {
+        vector<int> sum;
+        f(candidates, sum, 0, target);
+        return ans;
+    }
+};
+
 int main()
 {
 
