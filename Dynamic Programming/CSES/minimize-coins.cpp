@@ -30,9 +30,21 @@ int main(){
     for(int i = 0 ; i < n ; i++){
         cin>>v[i];
     }
+    // dp.clear();
+    // dp.resize(1000005, -1);
+    // int res = ftd(v, sum);
+    // (res == INT_MAX) ? cout<<-1 : cout<<res;
+    // bottom-up
     dp.clear();
-    dp.resize(1000005, -1);
-    int res = ftd(v, sum);
-    (res == INT_MAX) ? cout<<-1 : cout<<res;
+    dp.resize(sum+1, INT_MAX);
+    dp[0] = 0;
+    for(int t = 1 ; t <= sum ; t++) {
+        for(int i = 0 ; i  < n ; i++) {
+            if(v[i] > t) continue;
+            dp[t] = min(dp[t], 1 + dp[t - v[i]]);
+        }
+    }
+    if(dp[sum] == INT_MAX) cout<<-1;
+    else cout<<dp[sum];
     return 0; 
 }
