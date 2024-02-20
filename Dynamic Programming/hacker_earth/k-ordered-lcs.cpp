@@ -2,43 +2,44 @@
 #define ll long long int
 #define infp INT_MAX
 #define infn INT_MIN
+#define pp pair<int, int>
 #define mod 1000000007
 
 using namespace std;
 template<typename T>
 using vec = vector<T>;
 
-int dp[2005][2005][10];
+int dp[2005][2005][6];
 
-// https://www.hackerearth.com/problem/algorithm/mancunian-and-k-ordered-lcs-e6a4b8c6/
-
-int ftd(vec<int> &v1, vec<int> &v2, int i, int j, int k){
-    int n = v1.size();
-    int m = v2.size();
+int ftd(vec<int> &num1, vec<int> &num2, int i, int j, int k) {
     // base case
-    if(i == n || j == m || k == 0) return 0;
+    if(i >= num1.size() or j >= num2.size()) return 0;
     if(dp[i][j][k] != -1) return dp[i][j][k];
-    int ans = infn;
-    if(v1[i] == v2[j]) ans = max(ans, 1 + ftd(v1, v2, i+1, j+1, k));
-    else{
-        ans = max(ans, 1 + ftd(v1, v2, i+1, j+1, k-1));
-        ans = max(ans, ftd(v1, v2, i+1, j, k));
-        ans = max(ans, ftd(v1, v2, i, j+1, k));
+    
+    // pick
+    if(num1[i] == num2[j]) {
+        return dp[i][j][k] = 1 + ftd(num1, num2, i+1, j+1, k);
     }
-    return dp[i][j][k] = ans;
+
+    // not pick
+    int res = 0;
+    if(k > 0) {
+        // pick
+        res = 1 + ftd(num1, num2, i+1, j+1, k-1);
+    }
+    res = max(res, ftd(num1, num2, i+1, j, k));
+    res = max(res, ftd(num1, num2, i, j+1, k));
+
+    return dp[i][j][k] = res;
 }
 
-int main(){
+int main() {
     int n, m, k;
     cin>>n>>m>>k;
-    vec<int> v1(n), v2(m);
+    vec<int> num1(n), num2(m);
+    for(int i = 0 ; i < n ; i++) cin>>num1[i];
+    for(int i = 0 ; i < m ; i++) cin>>num2[i];
     memset(dp, -1, sizeof(dp));
-    for(int i = 0 ; i < n ; i++){
-        cin>>v1[i];
-    }
-    for(int i = 0 ; i < m ; i++){
-        cin>>v2[i];
-    }
-    cout<<ftd(v1, v2, 0, 0, k);
+    cout<<ftd(num1, num2, 0, 0, k);
     return 0;
 }
