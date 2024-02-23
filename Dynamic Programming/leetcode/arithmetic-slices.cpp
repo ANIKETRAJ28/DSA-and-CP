@@ -13,34 +13,30 @@ using vec = vector<T>;
 class Solution {
 public:
     vector<int> dp;
-    int ftd(vector<int> &arr, int i){
+    int ftd(vector<int>& nums, int i) {
         // base case
         if(i <= 1) return 0;
         if(dp[i] != -1) return dp[i];
         int ans = 0;
-        if(arr[i] - arr[i-1] == arr[i-1] - arr[i-2]) ans = 1 + ftd(arr, i-1);
+        if(nums[i] - nums[i-1] == nums[i-1] - nums[i-2]) ans = 1 + ftd(nums, i-1);
         return dp[i] = ans;
     }
-
     int numberOfArithmeticSlices(vector<int>& nums) {
-        int n = nums.size();
-        // if(n < 3) return 0;
-        // dp.resize(n, 0);
-        // for(int i = 2 ; i < n ; i++){
-        //     if(nums[i] - nums[i-1] == nums[i-1] - nums[i-2])
-        //     dp[i] = 1 + dp[i-1];
-        // }
-        // int ans = 0;
-        // for(int i = 0 ; i < n ; i++) ans += dp[i];
-        // return ans;
-        dp.clear();
-        dp.resize(n, -1);
-        ftd(nums, n-1);
         int ans = 0;
-        for(int i = 2 ; i < n ; i++){
-            ans += ftd(nums, i);
+        // dp.resize(nums.size()+1, -1);
+        // for(int i = 2 ; i < nums.size() ; i++) {
+        //     ans += ftd(nums, i);
+        // }
+        // return ans;
+        dp.resize(nums.size()+1, 0);
+        for(int i = 2 ; i < nums.size() ; i++) {
+            if(nums[i] - nums[i-1] == nums[i-1] - nums[i-2]) {
+                dp[i] = 1 + dp[i-1];
+            }
         }
-        cout<<"\n";
+        for(int i = 0 ; i < nums.size() ; i++) {
+            ans += dp[i];
+        }
         return ans;
     }
 };
