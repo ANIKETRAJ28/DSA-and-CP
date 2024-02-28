@@ -9,36 +9,24 @@ using namespace std;
 template<typename T>
 using vec = vector<T>;
 
-vec<vec<double>> dp;
-vec<double> coins;
-int n;
+double dp[3005][3005];
 
-double ftd(int i, int diff, double sum) {
-    if(i == n and diff > 0) {
-        return sum;
-    }
-    if(i == n) {
-        return 0.0;
-    }
-    if(dp[i][diff] != -1.0) return dp[i][diff];
-    cout<<sum<<"\n";
-    double ans = 1.0;
-    // head
-    ans += ftd(i+1, diff+1, sum*coins[i]);
-    // tail
-    ans += ftd(i+1, diff-1, sum*(1.0-coins[i]));
+double ftd(vec<double> &coins, int i, int diff) {
+    if(diff == 0) return 1;
+    if(i == -1) return 0;
+    if(dp[i][diff] > -0.9) return dp[i][diff];
 
-    return dp[i][diff] = ans;
+    return dp[i][diff] = ftd(coins, i-1, diff-1)*coins[i] + ftd(coins, i-1, diff)*(1 - coins[i]);
 }
 
 int main() {
+    int n;
     cin>>n;
-    dp.resize(n+1, vec<double> (n+1, -1.0));
-    while(n--) {
-        int el;
-        cin>>el;
-        coins.push_back(el);
+    vec<double> coins(n);
+    memset(dp, -1, sizeof(dp));
+    for(int i = 0 ; i < n ; i++) {
+        cin>>coins[i];
     }
-    cout<<ftd(0, 0, 1.0);
+    cout<<fixed<<setprecision(9)<<ftd(coins, n-1, (n+1)/2);
     return 0;
 }
