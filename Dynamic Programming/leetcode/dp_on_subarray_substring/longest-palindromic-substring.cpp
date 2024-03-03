@@ -14,14 +14,24 @@ using vec = vector<T>;
 class Solution {
 public:
     int dp[1005][1005];
+    // fbu
     bool check(int i, int j, string &s) {
-        if(dp[i][j] != -1) return dp[i][j];
         while(i < j) {
-            if(s[i] != s[j]) return false;
+            if(dp[i][j] != -1) return dp[i][j];
+            if(s[i] != s[j]) return dp[i][j] = false;
             i++;
             j--;
         }
         return dp[i][j] = true;
+    }
+    // ftd
+    bool check(int i, int j, string &s) {
+        int n = s.size();
+        // base case
+        if(i > j) return true;
+        if(dp[i][j] != -1) return dp[i][j];
+        
+        return s[i] == s[j] and check(i+1, j-1, s);
     }
     string longestPalindrome(string s) {
         memset(dp, -1, sizeof(dp));
