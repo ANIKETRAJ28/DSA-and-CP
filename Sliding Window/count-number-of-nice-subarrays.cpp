@@ -13,22 +13,22 @@ using vec = vector<T>;
 
 class Solution {
 public:
-    int subarrays(vector<int>& nums, int k) {
-        int cnt = 0, ans = 0, i = 0, j = 0;
-        int n = nums.size();
-        while(j < n) {
-            if(nums[j]%2) cnt++;
-            while(cnt > k) {
-                if(nums[i]%2) cnt--;
-                i++;
-            }
-            ans += j-i+1;
-            j++;
-        }
-        return ans;
-    }
     int numberOfSubarrays(vector<int>& nums, int k) {
-        return subarrays(nums, k) - subarrays(nums, k-1);
+        int j = 0, odd = 0, count = 0, total = 0;
+        for (int i = 0; i < nums.size(); i++) {
+            if (nums[i]%2) {
+                odd++;
+                if (odd >= k) {
+                    count = 1;
+                    while (!(nums[j]%2)) {
+                        count++;
+                        j++;
+                    }
+                    total += count;
+                }
+            } else if (odd >= k) total += count;
+        }
+        return total;
     }
 };
 
