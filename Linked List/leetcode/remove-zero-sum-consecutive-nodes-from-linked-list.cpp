@@ -56,6 +56,45 @@ public:
     }
 };
 
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* removeZeroSumSublists(ListNode* head) {
+        ListNode* dummyNode = new ListNode(0);
+        unordered_map<int, ListNode*> mp;
+        mp[0] = dummyNode;
+        dummyNode->next = head;
+        int prefix = 0;
+        while(head) {
+            prefix += head->val;
+            if(mp.find(prefix) == mp.end()) {
+                mp[prefix] = head;
+            } else {
+                ListNode* strt = mp[prefix];
+                ListNode* temp = strt;
+                int subPrefix = prefix;
+                while(temp != head) {
+                    temp = temp->next;
+                    subPrefix += temp->val;
+                    if(temp != head) mp.erase(subPrefix);
+                }
+                strt->next = head->next;
+            }
+            head = head->next;
+        }
+        return dummyNode->next;
+    }
+};
+
 int main() {
     
     return 0;
