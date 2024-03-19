@@ -11,6 +11,10 @@ using vec = vector<T>;
 
 // https://leetcode.com/problems/task-scheduler/description
 
+/**
+ * TC = O(n*k) -> n => cooldown time k -> size of array
+ * SC = O(26) ~ O(1) => array size
+*/
 class Solution {
 public:
     int leastInterval(vector<char>& tasks, int n) {
