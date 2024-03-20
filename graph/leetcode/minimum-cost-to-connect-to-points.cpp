@@ -8,72 +8,60 @@ using namespace std;
 template <typename T>
 using vec = vector<T>;
 
-class Solution
-{
+class Solution {
 public:
-    vector<int> parent;
-    vector<int> rank;
+    struct Edge {
+        int src, dst, wts;
+    };
 
-    int find(int a)
-    {
-        return parent[a] = (parent[a] == a) ? a : find(parent[a]);
+    static bool cmp(Edge &e1, Edge &e2) {
+        return e1.wts < e2.wts;
     }
 
-    void Union(int a, int b)
-    {
-        a = find(a);
-        b = find(b);
-        if (a == b)
-            return;
-        if (rank[a] >= rank[b])
-        {
+    int find(vector<int> &parent, int n) {
+        return parent[n] = (parent[n] == n) ? n : find(parent, parent[n]);
+    }
+    void Union(vector<int> &parent, vector<int> &rank, int a, int b) {
+        a = find(parent, a);
+        b = find(parent, b);
+        if(a == b) return;
+        if(rank[a] >= rank[b]) {
             parent[b] = a;
             rank[a]++;
-        }
-        else
-        {
-            parent[a] = b;
+        } else {
+            parent[b] = a;
             rank[b]++;
         }
     }
 
-    int kruskals(vector<vector<int>> &edges)
-    {
+    int kruskals(vector<Edge> &graph, int n) {
+        vector<int> parent(n), rank(n, 1);
+        for(int i = 0 ; i < n ; i++) parent[i] = i;
+        sort(graph.begin(), graph.end(), cmp);
         int ans = 0;
-        int n = edges.size();
-        sort(edges.begin(), edges.end());
-        for (int i = 0; i < n; i++)
-        {
-            vector<int> e = edges[i];
-            int a = find(e[1]);
-            int b = find(e[2]);
-            if (a == b)
-                continue;
-            ans += e[0];
-            Union(a, b);
+        for(int i = 0 ; i < graph.size() ; i++) {
+            int src = find(parent, graph[i].src);
+            int dst = find(parent, graph[i].dst);
+            if(src == dst) continue;
+            Union(parent, rank, src, dst);
+            ans += graph[i].wts;
         }
         return ans;
     }
 
-    int minCostConnectPoints(vector<vector<int>> &points)
-    {
+    int minCostConnectPoints(vector<vector<int>>& points) {
         int n = points.size();
-        parent.resize(n);
-        rank.resize(n, 0);
-        for (int i = 0; i < n; i++)
-        {
-            parent[i] = i;
-        }
-        vector<vector<int>> edges;
-        for (int i = 0; i < n; i++)
-        {
-            for (int j = i + 1; j < n; j++)
-            {
-                int dis = abs(points[i][0] - points[j][0]) + abs(points[i][1] - points[j][1]);
-                edges.push_back({dis, i, j});
+        vector<Edge> graph;
+        for(int i = 0 ; i < n ; i++) {
+            for(int j = i+1 ; j < n ; j++) {
+                int srci = points[i][0];
+                int srcj = points[i][1];
+                int dsti = points[j][0];
+                int dstj = points[j][1];
+                graph.push_back({i, j, abs(srci - dsti) + abs(srcj - dstj)});
             }
         }
-        return kruskals(edges);
+        return kruskals(graph, n);
     }
 };
 
