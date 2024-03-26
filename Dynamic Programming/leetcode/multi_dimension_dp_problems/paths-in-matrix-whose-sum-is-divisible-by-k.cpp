@@ -15,7 +15,7 @@ class Solution {
 public:
     #define mod 1000000007
     vector<vector<vector<int>>> dp;
-    int ftd(vector<vector<int>> &grid, int i, int j, int sum, int &k) {
+    int ftd(vector<vector<int>> &grid, int i, int j, int sum, int k) {
         int n = grid.size();
         int m = grid[0].size();
         if(i >= n or j >= m) return 0;
