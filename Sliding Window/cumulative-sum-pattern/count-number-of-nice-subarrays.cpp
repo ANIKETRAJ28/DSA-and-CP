@@ -34,6 +34,33 @@ public:
     }
 };
 
+class Solution {
+public:
+    int minSumSubarray(vector<int>& nums, int k) {
+        int odd = 0;
+        int ans = 0;
+        int n = nums.size();
+        int i = 0, j = 0;
+        while(j < n) {
+            if(nums[j]%2) odd++;
+            while(odd > k) {
+                ans += j-i;
+                if(nums[i]%2) odd--;
+                i++;
+            }
+            j++;
+        }
+        while(i < n) {
+            ans += j-i;
+            i++;
+        }
+        return ans;
+    }
+    int numberOfSubarrays(vector<int>& nums, int k) {
+        return minSumSubarray(nums, k) - minSumSubarray(nums, k-1);
+    }
+};
+
 int main() {
     
     return 0;
