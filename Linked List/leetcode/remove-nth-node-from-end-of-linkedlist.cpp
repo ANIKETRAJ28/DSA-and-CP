@@ -38,6 +38,28 @@ public:
     }
 };
 
+class Solution {
+public:
+    ListNode* removeNthFromEnd(ListNode* head, int n) {
+        int cnt = 0;
+        ListNode *newNode = new ListNode(INT_MAX);
+        newNode->next = head;
+        head = newNode;
+        ListNode *dummy = head;
+        while(dummy) {
+            dummy = dummy->next;
+            cnt++;
+        }
+        cnt = cnt-n-1;
+        dummy = head;
+        while(cnt--) {
+            dummy = dummy->next;
+        }
+        dummy->next = dummy->next->next;
+        return head->next;
+    }
+};
+
 int main(){
     
     return 0;

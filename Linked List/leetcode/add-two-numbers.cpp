@@ -20,52 +20,49 @@ struct ListNode {
 class Solution {
 public:
     ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
-        int rem = 0;
-        bool flag = true;
-        ListNode *head, *temp;
-        while(l1 and l2){
-            int sum = l1->val + l2->val+ rem;
-            if(flag){
-                ListNode* dummy = new ListNode(sum%10);
-                rem = sum/10;
-                head = dummy;
-                temp = dummy;
-                flag = false;
+        int carry = 0;
+        ListNode *ans = NULL;
+        ListNode *dummy = ans;
+        while(l1 && l2) {
+            int sum = (l1->val + l2->val + carry)%10;
+            carry = (l1->val + l2->val + carry)/10;
+            ListNode *newNode = new ListNode(sum);
+            if(!ans) {
+                ans = newNode;
+                dummy = ans;
             }
-            else{
-                ListNode* dummy = new ListNode(sum%10);
-                rem = sum/10;
-                temp->next = dummy;
-                temp = dummy;
+            else {
+                dummy->next = newNode;
+                dummy = dummy->next;
             }
-            l1 = l1->next;
+            l1 = l1->next; 
             l2 = l2->next;
         }
-        if(!l1){
-            while(l2){
-                int sum = l2->val+ rem;
-                ListNode* dummy = new ListNode(sum%10);
-                rem = sum/10;
-                temp->next = dummy;
-                temp = dummy;
-                l2 = l2->next;
+        if(l1) {
+            while(l1) {
+                int sum = (l1->val + carry)%10;
+                carry = (l1->val + carry)/10;
+                ListNode *newNode = new ListNode(sum);
+                dummy->next = newNode;
+                dummy = dummy->next;
+                l1 = l1->next; 
             }
         }
-        if(!l2){
-            while(l1){
-                int sum = l1->val+ rem;
-                ListNode* dummy = new ListNode(sum%10);
-                rem = sum/10;
-                temp->next = dummy;
-                temp = dummy;
-                l1 = l1->next;
+        if(l2) {
+            while(l2) {
+                int sum = (l2->val + carry)%10;
+                carry = (l2->val + carry)/10;
+                ListNode *newNode = new ListNode(sum);
+                dummy->next = newNode;
+                dummy = dummy->next;
+                l2 = l2->next; 
             }
         }
-        if(rem){
-            ListNode* dummy = new ListNode(rem);
-            temp->next = dummy;
+        if(carry) {
+            ListNode *newNode = new ListNode(carry);
+            dummy->next = newNode;
         }
-        return head;
+        return ans;
     }
 };
 
