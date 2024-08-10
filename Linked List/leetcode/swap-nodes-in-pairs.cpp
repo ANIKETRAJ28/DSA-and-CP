@@ -36,6 +36,24 @@ public:
     }
 };
 
+class Solution {
+public:
+    ListNode* swapPairs(ListNode* head) {
+        if(!head || !head->next) return head;
+        ListNode *curr = head, *nxt = curr->next, *prv = new ListNode(-1), *ans = prv;
+        while(curr) {
+            curr->next = curr->next->next;
+            nxt->next = curr;
+            prv->next = nxt;
+            prv = curr;
+            curr = curr->next;
+            if(!curr || !curr->next) return ans->next;
+            nxt = curr->next; 
+        }
+        return NULL;
+    }
+};
+
 int main() {
     
     return 0;
