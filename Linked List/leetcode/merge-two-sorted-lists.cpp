@@ -9,6 +9,8 @@ using namespace std;
 template<typename T>
 using vec = vector<T>;
 
+// https://leetcode.com/problems/merge-two-sorted-lists/description/
+
 struct ListNode {
     int val;
     ListNode *next;
