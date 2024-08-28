@@ -9,7 +9,7 @@ using namespace std;
 template<typename T>
 using vec = vector<T>;
 
-// https://leetcode.com/problems/product-of-array-except-self/submissions/964973233/
+// https://leetcode.com/problems/product-of-array-except-self/
 
 // O(n) sapce
 class Solution {
