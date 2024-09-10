@@ -14,6 +14,29 @@ using vec = vector<T>;
 class Solution {
 public:
     int longestOnes(vector<int>& nums, int k) {
+        int n = nums.size();
+        int i = 0, j = 0;
+        int ans = 0;
+        while(i < n) {
+            while(!nums[i] && j < i && k == 0) {
+                ans = max(ans, i-j);
+                if(!nums[j]) k++;
+                j++;
+            }
+            if(!nums[i]) k--;
+            i++;
+            if(k < 0) {
+                j = i; 
+                k = 0;
+            }
+        }
+        return max(ans, i-j);
+    }
+};
+
+class Solution {
+public:
+    int longestOnes(vector<int>& nums, int k) {
         int len = 0;
         int flip = 0;
         int i = 0, j = 0;
