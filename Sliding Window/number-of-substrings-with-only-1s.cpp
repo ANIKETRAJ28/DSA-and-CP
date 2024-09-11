@@ -13,6 +13,34 @@ using vec = vector<T>;
 
 class Solution {
 public:
+    int numSubarrayProductLessThanK(vector<int>& nums, int k) {
+        int n = nums.size();
+        int i = 0, j = 0;
+        int prod = 1, cnt = 0;
+        while(i < n) {
+            prod *= nums[i];
+            while(j < i && prod >= k) {
+                cnt += i-j;
+                prod /= nums[j];
+                j++;
+            }
+            while(j <= i && prod >= k) {
+                prod /= nums[j];
+                j++;
+            }
+            i++;
+        }
+        while(j < n && prod < k) {
+            cnt+= i-j;
+            prod /= nums[j];
+            j++;
+        }
+        return cnt;
+    }
+};
+
+class Solution {
+public:
     #define mod 1000000007
     int numSub(string s) {
         int n = s.size();
