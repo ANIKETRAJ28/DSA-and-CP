@@ -14,6 +14,29 @@ using vec = vector<T>;
 class Solution {
 public:
     int largestSumAfterKNegations(vector<int>& nums, int k) {
+        int n = nums.size();
+        sort(nums.begin(), nums.end());
+        int i = 0;
+        while(i < n && nums[i] < 0 && k > 0) {
+            nums[i] *= -1;
+            k--;
+            i++;
+        }
+        sort(nums.begin(), nums.end());
+        int sum = 0;
+        i = 0;
+        while(i < n) sum += nums[i++];
+        if(nums[0] == 0) return sum;
+        if(k%2) {
+            return sum - 2*nums[0];
+        }
+        return sum;
+    }
+};
+
+class Solution {
+public:
+    int largestSumAfterKNegations(vector<int>& nums, int k) {
         priority_queue<int, vector<int>, greater<int>> minHeap(nums.begin(), nums.end());
         int n = nums.size();
         while(k--) {

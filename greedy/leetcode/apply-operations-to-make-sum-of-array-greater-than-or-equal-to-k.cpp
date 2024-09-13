@@ -14,6 +14,28 @@ using vec = vector<T>;
 class Solution {
 public:
     int minOperations(int k) {
+        int plus = 0;
+        int num = 1;
+        int ans = INT_MAX;
+        while(num <= k) {
+            int val = num;
+            int dubl = 0;
+            while(val < k) {
+                val += num;
+                dubl++;
+            }
+            ans = min(ans, dubl+plus);
+            dubl = 0;
+            num++;
+            plus++;
+        }
+        return ans;
+    }
+};
+
+class Solution {
+public:
+    int minOperations(int k) {
         if(k == 1) return 0;
         int minOp = INT_MAX;
         for(int i = 1 ; i <= k ; i++) {

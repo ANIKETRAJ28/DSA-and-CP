@@ -14,6 +14,31 @@ using vec = vector<T>;
 class Solution {
 public:
     int bagOfTokensScore(vector<int>& tokens, int power) {
+        int n = tokens.size();
+        sort(tokens.begin(), tokens.end());
+        int i = 0, j = n-1;
+        int score = 0;
+        while(i <= j) {
+            if(i == j) {
+                if(power >= tokens[i]) return score+1;
+                return score;
+            } else if(tokens[i] <= power) {
+                score++;
+                power -= tokens[i];
+                i++;
+            } else if(score > 0) {
+                score--;
+                power += tokens[j];
+                j--;
+            } else return score;
+        }
+        return score;
+    }
+};
+
+class Solution {
+public:
+    int bagOfTokensScore(vector<int>& tokens, int power) {
         sort(tokens.begin(), tokens.end());
         int n = tokens.size();
         int i = 0, j = n-1;
