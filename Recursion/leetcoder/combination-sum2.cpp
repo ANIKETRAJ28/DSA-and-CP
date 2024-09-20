@@ -9,7 +9,35 @@ using namespace std;
 template<typename T>
 using vec = vector<T>;
 
-// https://leetcode.com/problems/combination-sum-ii/submissions/
+// https://leetcode.com/problems/combination-sum-ii/
+
+class Solution {
+public:
+    void combinations(vector<int> &candidates, vector<vector<int>> &result, vector<int> &ans, int i, int sum) {
+        int n = candidates.size();
+        if(i == n || sum == 0) {
+            if(sum == 0) {
+                result.push_back(ans);
+            }
+            return;
+        }
+        // pick
+        if(candidates[i] <= sum) {
+            ans.push_back(candidates[i]);
+            combinations(candidates, result, ans, i+1, sum-candidates[i]);
+            ans.pop_back();
+        }
+        while(i < n-1 && candidates[i] == candidates[i+1]) i++;
+        combinations(candidates, result, ans, i+1, sum);
+    }
+    vector<vector<int>> combinationSum2(vector<int>& candidates, int target) {
+        sort(candidates.begin(), candidates.end());
+        vector<vector<int>> result;
+        vector<int> ans;
+        combinations(candidates, result, ans, 0, target);
+        return result;
+    }
+};
 
 class Solution {
 public:

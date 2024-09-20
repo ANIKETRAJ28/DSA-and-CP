@@ -10,6 +10,28 @@ using vec = vector<T>;
 
 // https://leetcode.com/problems/combination-sum/
 
+class Solution {
+public:
+    void combinations(vector<int> &candidates, vector<vector<int>> &result, vector<int> ans, int target, int i) {
+        int n = candidates.size();
+        if(target <= 0 || i == n) {
+            if(target == 0) result.push_back(ans);
+            return;
+        }
+        for(int j = i ; j < n ; j++) {
+            ans.push_back(candidates[j]);
+            combinations(candidates, result, ans, target-candidates[j], j);
+            ans.pop_back();
+        }
+        return;
+    }
+    vector<vector<int>> combinationSum(vector<int>& candidates, int target) {
+        vector<vector<int>> result;
+        combinations(candidates, result, {}, target, 0);
+        return result;
+    }
+};
+
 class Solution
 {
 public:

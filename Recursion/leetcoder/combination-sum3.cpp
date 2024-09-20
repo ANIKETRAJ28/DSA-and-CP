@@ -13,6 +13,28 @@ using vec = vector<T>;
 
 class Solution {
 public:
+    void combinations(vector<vector<int>> &result, vector<int> &ans, int i, int k, int sum) {
+        if(sum == 0 || i > 9) {
+            if(sum == 0 && ans.size() == k) result.push_back(ans);
+            return;
+        }
+        if(ans.size() < k && i <= sum) {
+            ans.push_back(i);
+            combinations(result, ans, i+1, k, sum-i);
+            ans.pop_back();
+        }
+        combinations(result, ans, i+1, k, sum);
+    } 
+    vector<vector<int>> combinationSum3(int k, int n) {
+        vector<vector<int>> result;
+        vector<int> ans;
+        combinations(result, ans, 1, k, n);
+        return result;
+    }
+};
+
+class Solution {
+public:
 vector<vector<int>> ans;
     void f(int k, vector<int> sum, int i, int t) {
         if(t == 0 and k == 0) {
