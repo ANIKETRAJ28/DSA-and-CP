@@ -14,58 +14,63 @@ using vec = vector<T>;
 class Solution
 {
 public:
+  vector<int> parent, size;
   int mx = 1;
-  int find(int x, vector<int> &parent)
+
+  int find(int a)
   {
-    return parent[x] == x ? x : find(parent[x], parent);
+    return parent[a] == a ? a : find(parent[a]);
   }
-  void Union(int a, int b, vector<int> &parent, vector<int> &size)
+
+  void Union(int a, int b)
   {
-    a = find(a, parent);
-    b = find(b, parent);
+    a = find(a);
+    b = find(b);
     if (a == b)
       return;
-    if (a >= b)
+    if (size[a] >= size[b])
     {
-      size[a] += size[b];
       parent[b] = a;
+      size[a] += size[b];
       mx = max(mx, size[a]);
     }
     else
     {
-      size[b] += size[a];
       parent[a] = b;
+      size[b] += size[a];
       mx = max(mx, size[b]);
     }
   }
+
   int validSubarraySize(vector<int> &nums, int threshold)
   {
     int n = nums.size();
     vector<pair<int, int>> val_idx;
+    vector<bool> active(n + 1, 0);
+    size.resize(n + 1, 1);
+    parent.resize(n + 1);
     for (int i = 0; i < n; i++)
+    {
       val_idx.push_back({nums[i], i + 1});
-    sort(val_idx.begin(), val_idx.end());
-
-    vector<bool> active(n + 1, false);
-    int k = 1;
-    vector<int> size(n + 1, 1), parent(n + 1);
+    }
     for (int i = 0; i <= n; i++)
       parent[i] = i;
-
-    for (int j = n - 1; j >= 0 && k <= n;)
+    sort(val_idx.begin(), val_idx.end());
+    int k = 1;
+    for (int i = n - 1; i >= 0 && k <= n;)
     {
-      double k_threashold = (double)threshold / k;
-      while (j >= 0 && (double)val_idx[j].first > k_threashold)
+      double minGreatest = (double)threshold / k;
+      while (i >= 0 && (double)val_idx[i].first > minGreatest)
       {
-        int idx = val_idx[j].second;
-        active[idx] = true;
+        int idx = val_idx[i].second;
+        active[idx] = 1;
         if (active[idx - 1])
-          Union(idx, idx - 1, parent, size);
+          Union(idx, idx - 1);
         if (active[idx + 1])
-          Union(idx, idx + 1, parent, size);
-        j--;
+          Union(idx, idx + 1);
+        i--;
       }
-      if (j < n - 1 && mx >= k)
+      if (i < n - 1 && mx >= k)
         return k;
       k++;
     }
