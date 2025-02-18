@@ -71,7 +71,7 @@ void solve(string &s)
             }
             else
             {
-                while (!st.empty() && priority(s[i]) <= priority(st.top()))
+                while (!st.empty() && priority(s[i]) < priority(st.top()))
                 {
                     output += st.top();
                     st.pop();
