@@ -9,6 +9,8 @@ using namespace std;
 template <typename T>
 using vec = vector<T>;
 
+// https://leetcode.com/problems/regular-expression-matching/description/
+
 class Solution
 {
 public:
@@ -42,10 +44,36 @@ public:
     return dp[i][j] = ans;
   }
 
+  int fbu(string &s, string &t)
+  {
+    vector<vector<bool>> dp(21, vector<bool>(21, 0));
+    int n = s.size();
+    int m = t.size();
+    dp[n][m] = 1;
+    for (int i = n; i >= 0; i--)
+    {
+      for (int j = m - 1; j >= 0; j--)
+      {
+        bool ans = false;
+        if (j + 1 < m && t[j + 1] == '*')
+        {
+          ans = (match(s, t, i, j) && dp[i + 1][j]) || dp[i][j + 2];
+        }
+        else if (match(s, t, i, j))
+        {
+          ans = dp[i + 1][j + 1];
+        }
+        dp[i][j] = ans;
+      }
+    }
+    return dp[0][0];
+  }
+
   bool isMatch(string s, string p)
   {
-    dp.resize(21, vector<int>(21, -1));
-    return ftd(s, p, 0, 0);
+    // dp.resize(21, vector<int> (21, -1));
+    // return ftd(s, p, 0, 0);
+    return fbu(s, p);
   }
 };
 
