@@ -9,7 +9,7 @@ using namespace std;
 template <typename T>
 using vec = vector<T>;
 
-// https://leetcode.com/problems/palindrome-partitioning-ii/
+// https://leetcode.com/problems/palindrome-partitioning-iii/
 
 class Solution
 {
