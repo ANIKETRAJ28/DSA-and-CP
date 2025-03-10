@@ -58,7 +58,7 @@ public:
       {
         for (int j = i; j < n; j++)
         {
-          int cuts = minCuts(s, i, j);
+          int cuts = minChanges(s, i, j);
           int res = dp[j + 1][k - 1];
           if (res != INT_MAX)
             dp[i][k] = min(dp[i][k], res + cuts);
