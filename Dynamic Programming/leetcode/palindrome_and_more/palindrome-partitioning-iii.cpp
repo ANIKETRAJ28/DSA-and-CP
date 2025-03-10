@@ -47,6 +47,27 @@ public:
     return dp[i][cnt] = ans;
   }
 
+  int fbu(string &s, int cnt)
+  {
+    int n = s.size();
+    dp.resize(n + 1, vector<int>(cnt + 1, INT_MAX));
+    dp[n][0] = 0;
+    for (int k = 1; k <= cnt; k++)
+    {
+      for (int i = n - 1; i >= 0; i--)
+      {
+        for (int j = i; j < n; j++)
+        {
+          int cuts = minCuts(s, i, j);
+          int res = dp[j + 1][k - 1];
+          if (res != INT_MAX)
+            dp[i][k] = min(dp[i][k], res + cuts);
+        }
+      }
+    }
+    return dp[0][cnt];
+  }
+
   int palindromePartition(string s, int k)
   {
     dp.resize(105, vector<int>(105, -1));
