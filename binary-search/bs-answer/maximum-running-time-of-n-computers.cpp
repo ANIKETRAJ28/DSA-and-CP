@@ -11,6 +11,11 @@ using vec = vector<T>;
 
 // https://leetcode.com/problems/maximum-running-time-of-n-computers/description/
 
+/**
+ * refer this solution
+ * https://leetcode.com/problems/maximum-running-time-of-n-computers/solutions/1693347/heap-vs-binary-search/
+ */
+
 class Solution
 {
 public:
