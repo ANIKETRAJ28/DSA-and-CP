@@ -11,7 +11,7 @@ using vec = vector<T>;
 
 // https://leetcode.com/problems/sliding-window-maximum/description/
 
-`class Solution
+class Solution
 {
 public:
   vector<int> maxSlidingWindow(vector<int> &nums, int k)
