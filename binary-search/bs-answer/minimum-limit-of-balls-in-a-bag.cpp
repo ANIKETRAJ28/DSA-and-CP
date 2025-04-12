@@ -52,6 +52,52 @@ public:
   }
 };
 
+class Solution
+{
+public:
+  bool canMake(vector<int> &nums, int operations, int val)
+  {
+    int n = nums.size();
+    int op = 0;
+    for (int i = 0; i < n; i++)
+    {
+      if (nums[i] <= val)
+        continue;
+      if (nums[i] % val)
+        op += nums[i] / val;
+      else
+        op += (nums[i] / val) - 1;
+      if (op > operations)
+        return false;
+    }
+    return true;
+  }
+  int minimumSize(vector<int> &nums, int maxOperations)
+  {
+    int n = nums.size();
+    int lo = 1, hi = -1;
+    for (int i : nums)
+    {
+      hi = max(hi, i);
+    }
+    int ans = 0;
+    while (lo <= hi)
+    {
+      int mid = lo + (hi - lo) / 2;
+      if (canMake(nums, maxOperations, mid))
+      {
+        ans = mid;
+        hi = mid - 1;
+      }
+      else
+      {
+        lo = mid + 1;
+      }
+    }
+    return ans;
+  }
+};
+
 int main()
 {
 
