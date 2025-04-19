@@ -11,6 +11,31 @@ class Solution
 public:
   int minSwaps(vector<int> &arr)
   {
+    int n = arr.size();
+    int countone = 0;
+    for (int i = 0; i < n; i++)
+    {
+      if (arr[i])
+        countone++;
+    }
+    if (countone == 0)
+      return -1;
+    int minswap = INT_MAX;
+    for (int i = 0; i < n - countone; i++)
+    {
+      int one = 0;
+      for (int j = i; j < (i + countone); j++)
+      {
+        if (arr[j])
+          one++;
+      }
+      minswap = min(minswap, (countone - one));
+    }
+
+    return minswap;
+  }
+  int minSwaps(vector<int> &arr)
+  {
     // Complete the function
     int n = arr.size();
     int totalOnes = 0;
