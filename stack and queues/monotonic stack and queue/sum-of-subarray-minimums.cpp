@@ -12,6 +12,55 @@ using vec = vector<T>;
 // https://leetcode.com/problems/sum-of-subarray-minimums/description/
 
 class Solution
+{
+public:
+  vector<int> prvSmaller(vector<int> &arr)
+  {
+    int n = arr.size();
+    stack<int> st;
+    vector<int> prv(n);
+    for (int i = 0; i < n; i++)
+    {
+      while (!st.empty() && arr[st.top()] > arr[i])
+        st.pop();
+      prv[i] = st.empty() ? -1 : st.top();
+      st.push(i);
+    }
+    return prv;
+  }
+  vector<int> nxtSmaller(vector<int> &arr)
+  {
+    int n = arr.size();
+    stack<int> st;
+    vector<int> nxt(n);
+    for (int i = n - 1; i >= 0; i--)
+    {
+      while (!st.empty() && arr[st.top()] >= arr[i])
+        st.pop();
+      nxt[i] = st.empty() ? n : st.top();
+      st.push(i);
+    }
+    return nxt;
+  }
+  int sumSubarrayMins(vector<int> &arr)
+  {
+    int n = arr.size();
+    vector<int> prv = prvSmaller(arr);
+    vector<int> nxt = nxtSmaller(arr);
+    int MOD = 1e9 + 7;
+    int ans = 0;
+    for (int i = 0; i < n; i++)
+    {
+      int prev = i - prv[i];
+      int next = nxt[i] - i;
+      int total = (1LL * prev * next) % MOD;
+      ans = (ans + (1LL * total * arr[i]) % MOD) % MOD;
+    }
+    return ans;
+  }
+};
+
+class Solution
 #define mod 1000000007
 {
 public:
