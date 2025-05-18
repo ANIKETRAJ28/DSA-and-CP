@@ -24,7 +24,7 @@ public:
     {
       if (s[i] != s[j])
         return s;
-      if (i == n / 2)
+      if (s[i] == s[j])
         break;
       if (s[i] == s[j])
       {
