@@ -14,100 +14,74 @@ using vec = vector<T>;
 class Solution
 {
 public:
-    vector<int> dp;
-
-    // top down
-    ll ftd(string &s, int i)
+    int dp[101];
+    int f(string &s, int i)
     {
-        if (i < 0)
+        int n = s.size();
+        if (i == n)
             return 1;
-        if (i == 0 && s[i] - '0' > 0)
+        int ans = 0;
+        if (s[i] != '0')
+            ans += ftd(s, i + 1);
+        if (i < n - 1 && s[i] != '0' && stoi(s.substr(i, 2)) <= 26)
+            ans += ftd(s, i + 2);
+        return ans;
+    }
+    int ftd(string &s, int i)
+    {
+        int n = s.size();
+        if (i == n)
             return 1;
-        if (i == 0)
-            return 0;
-
         if (dp[i] != -1)
             return dp[i];
-
-        ll ans = 0;
-
-        if (s[i] - '0' > 0)
-            ans += ftd(s, i - 1);
-
-        if (s[i - 1] - '0' > 0 && (s[i - 1] - '0') * 10 + (s[i] - '0') <= 26)
-            ans += ftd(s, i - 2);
-
+        int ans = 0;
+        if (s[i] != '0')
+            ans += ftd(s, i + 1);
+        if (i < n - 1 && s[i] != '0' && stoi(s.substr(i, 2)) <= 26)
+            ans += ftd(s, i + 2);
         return dp[i] = ans;
     }
-
-    // bottom up
-    ll fbu(string &s)
-    {
-        dp.resize(105, 0);
-
-        if (s[0] - '0' != 0)
-            dp[0] = 1;
-        if (s.size() > 1)
-        {
-            if (s[1] != '0')
-                dp[1] += dp[0];
-            if (s[0] - '0' > 0 && (s[0] - '0') * 10 + (s[1] - '0') <= 26)
-                dp[1]++;
-        }
-
-        for (int i = 2; i < s.size(); i++)
-        {
-            ll ans = 0;
-
-            if (s[i] - '0' > 0)
-                ans += dp[i - 1];
-
-            if (s[i - 1] - '0' > 0 && (s[i - 1] - '0') * 10 + (s[i] - '0') <= 26)
-                ans += dp[i - 2];
-
-            dp[i] = ans;
-        }
-        return dp[s.size() - 1];
-    }
-
-    int numDecodings(string s)
-    {
-        // dp.resize(105, -1);
-        dp.clear();
-        return fbu(s);
-        // return ftd(s, s.size()-1);
-    }
-};
-
-class Solution
-{
-public:
-    vector<int> dp;
     int fbu(string &s)
     {
         int n = s.size();
-        if (s[0] == '0')
-            return 0;
-        if (n == 1)
-            return 1;
-        dp[0] = 1;
-        if (s[0] - '0' != 0 && ((s[0] - '0') * 10 + s[1] - '0') <= 26)
-            dp[1] = 1;
-        if (s[1] != '0')
-            dp[1]++;
-        for (int i = 2; i < n; i++)
+        memset(dp, 0, sizeof(dp));
+        dp[n] = 1;
+        for (int i = n - 1; i >= 0; i--)
         {
-            if (s[i] - '0' > 0)
-                dp[i] += dp[i - 1];
-            if (s[i - 1] - '0' > 0 && ((s[i - 1] - '0') * 10 + s[i] - '0') <= 26)
-                dp[i] += dp[i - 2];
+            int ans = 0;
+            if (s[i] != '0')
+                ans += dp[i + 1];
+            if (i < n - 1 && s[i] != '0' && stoi(s.substr(i, 2)) <= 26)
+                ans += dp[i + 2];
+            dp[i] = ans;
         }
-        return dp[n - 1];
+        return dp[0];
+    }
+    int fbuO(string &s)
+    {
+        int n = s.size();
+        int first = 1;
+        int last = 0;
+        for (int i = n - 1; i >= 0; i--)
+        {
+            int curr = 0;
+            if (s[i] != '0')
+            {
+                curr += first;
+                if (i < n - 1 && s[i] != '0' && stoi(s.substr(i, 2)) <= 26)
+                    curr += last;
+            }
+            last = first;
+            first = curr;
+        }
+        return first;
     }
     int numDecodings(string s)
     {
-        dp.resize(105, 0);
-        return fbu(s);
+        // memset(dp, -1, sizeof(dp));
+        // return ftd(s, 0);
+        // return fbu(s);.
+        return fbuO(s);
     }
 };
 
