@@ -22,7 +22,8 @@ public:
     qu.push({beginWord, 1});
     while (!qu.empty())
     {
-      auto [word, count] = qu.front();
+      auto word = qu.front().first;
+      auto count = qu.front().second;
       qu.pop();
       if (word == endWord)
         return count;
