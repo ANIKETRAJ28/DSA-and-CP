@@ -9,7 +9,7 @@ using namespace std;
 template <typename T>
 using vec = vector<T>;
 
-// https://cses.fi/problemset/task/1646
+// https://cses.fi/problemset/task/1646s
 
 void build(vector<ll> &tree, vector<ll> &arr, int i, int lo, int hi)
 {
