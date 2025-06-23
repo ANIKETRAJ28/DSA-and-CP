@@ -1,8 +1,6 @@
 .vscode/
 node_modules
-practice.cpp
-practice.exe
-demo.cpp
-demo.exe
-*.cpp
-*.exe
+practice*.cpp
+practice*.exe
+demo*.cpp
+demo*.exe
