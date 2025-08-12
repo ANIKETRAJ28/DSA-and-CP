@@ -35,7 +35,9 @@ public:
         }
         while (!qu.empty())
         {
-          auto [r, c] = qu.front();
+          auto p = qu.front();
+          int r = p.first;
+          int c = p.second;
           qu.pop();
           if (grid1[r][c] == 0)
             flag = false;
