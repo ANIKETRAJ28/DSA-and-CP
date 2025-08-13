@@ -69,6 +69,76 @@ public:
   }
 };
 
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution
+{
+public:
+  int bfs(vector<vector<int>> &graph, int target)
+  {
+    queue<int> qu;
+    int result = -1;
+    unordered_set<int> visited;
+    qu.push(target);
+    qu.push(-1);
+    visited.insert(target);
+    while (!qu.empty())
+    {
+      int val = qu.front();
+      qu.pop();
+      if (val == -1)
+      {
+        if (!qu.empty())
+          qu.push(-1);
+        result++;
+        continue;
+      }
+      for (int i = 0; i < graph[val].size(); i++)
+      {
+        if (!visited.count(graph[val][i]))
+        {
+          qu.push(graph[val][i]);
+          visited.insert(val);
+        }
+      }
+    }
+    return result;
+  }
+  int amountOfTime(TreeNode *root, int start)
+  {
+    vector<vector<int>> graph(100001);
+    queue<TreeNode *> qu;
+    qu.push(root);
+    while (!qu.empty())
+    {
+      TreeNode *temp = qu.front();
+      qu.pop();
+      if (temp->left)
+      {
+        graph[temp->val].push_back(temp->left->val);
+        graph[temp->left->val].push_back(temp->val);
+        qu.push(temp->left);
+      }
+      if (temp->right)
+      {
+        graph[temp->val].push_back(temp->right->val);
+        graph[temp->right->val].push_back(temp->val);
+        qu.push(temp->right);
+      }
+    }
+    return bfs(graph, start);
+  }
+};
+
 int main()
 {
 
