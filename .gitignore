@@ -5,3 +5,5 @@ practice*.exe
 demo*.cpp
 demo*.exe
 *.exe
+*.js
+*.java
